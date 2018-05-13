@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { passport, sign } from './passport';
+import { passport } from './passport';
+import { login } from './auth';
 
 const app = express();
 
@@ -13,13 +14,7 @@ app.get('/', (req, res) => {
   res.send('Running');
 });
 
-app.post('/login', (req, res) => {
-  if (!req.body.name || !req.body.password) {
-    return res.status(401).json({ message: 'Missing username / password in request' });
-  }
-
-  return null;
-});
+app.post('/login', login);
 
 app.listen(process.env.PORT || 4000, () => {
   console.log('Server started');
