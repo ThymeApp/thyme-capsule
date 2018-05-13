@@ -20,11 +20,14 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.2.1",
+    "mysql2": "^1.5.3",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "sequelize": "^4.37.7"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
