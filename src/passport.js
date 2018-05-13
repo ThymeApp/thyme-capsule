@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import jwt from 'jsonwebtoken';
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -7,9 +8,17 @@ const options = {
 };
 
 const strategy = new Strategy(options, (payload, next) => {
+  // check payload
   // next(err, user);
 });
 
 passport.use(strategy);
 
-export default passport;
+function sign(payload) {
+  return jwt.sign(payload, options.secretOrKey);
+}
+
+export default {
+  passport,
+  sign,
+};
