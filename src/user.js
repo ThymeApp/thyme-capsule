@@ -35,7 +35,7 @@ export const register = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(401).json({ message: 'Missing email / password in request' });
+    res.status(400).json({ message: 'Missing email / password in request' });
     return;
   }
 
@@ -48,4 +48,15 @@ export const register = async (req, res) => {
     res.status(400).json({ message: 'Password needs to be at least 6 characters long' });
     return;
   }
+
+  const user = await User.findOne({ where: { email } });
+
+  if (user) {
+    res.status(400).json({ message: 'Already a user with email' });
+    return;
+  }
+
+  const hash = await bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
+
+  res.json(await User.create({ email, password: hash }));
 };
