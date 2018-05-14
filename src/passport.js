@@ -16,10 +16,8 @@ const strategy = new Strategy(options, async (payload, next) => {
 
 passport.use(strategy);
 
-export function sign(payload) {
-  return jwt.sign(payload, options.secretOrKey);
-}
+export const sign = payload => jwt.sign(payload, options.secretOrKey);
 
 export const authJwt = passport.authenticate('jwt', { session: false });
 
-export { passport };
+export const initialized = passport.initialize();
