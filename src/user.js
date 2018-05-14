@@ -58,5 +58,7 @@ export const register = async (req, res) => {
 
   const hash = await bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
 
-  res.json(await User.create({ email, password: hash }));
+  const createdUser = await User.create({ email, password: hash });
+
+  res.json(createdUser.toObject());
 };
