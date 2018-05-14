@@ -20,4 +20,6 @@ export function sign(payload) {
   return jwt.sign(payload, options.secretOrKey);
 }
 
+export const authJwt = passport.authenticate('jwt', { session: false });
+
 export { passport };
