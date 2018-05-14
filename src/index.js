@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import { passport } from './passport';
-import { login } from './auth';
+import { login, register } from './user';
 
 const app = express();
 
@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login', login);
+app.post('/register', register);
 
 app.listen(process.env.PORT || 4000, () => {
   console.log('Server started');
