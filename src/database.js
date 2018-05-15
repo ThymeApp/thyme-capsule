@@ -1,3 +1,5 @@
+// @flow
+
 import Sequelize from 'sequelize';
 
 const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false });
@@ -19,12 +21,12 @@ export const User = sequelize.define('User', {
   ],
 });
 
-User.validEmail = (email) => {
+User.validEmail = (email: string) => {
   const re = /^(([^<>()[\].,;:\s@"]+(.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/i;
   return email.match(re);
 };
 
-User.prototype.toObject = function () {
+User.prototype.toObject = function toObject() {
   return {
     id: this.id,
     email: this.email,

@@ -1,5 +1,9 @@
-function catchError(errCode = 500, next) {
-  return async (req, res) => {
+// @flow
+
+import type { $Request, $Response } from 'express';
+
+function catchError(errCode: number = 500, next: (req: $Request) => {}) {
+  return async (req: $Request, res: $Response) => {
     try {
       res.json(await next(req));
     } catch (e) {
