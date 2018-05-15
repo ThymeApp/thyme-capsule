@@ -1,9 +1,13 @@
+// @flow
+
 import bcrypt from 'bcrypt';
+
+import type { ThymeRequest } from './types';
 
 import { sign } from './passport';
 import { User } from './database';
 
-export const login = async ({ body }) => {
+export const login = async ({ body }: ThymeRequest) => {
   const { email, password } = body;
 
   if (!email || !password) {
@@ -23,22 +27,24 @@ export const login = async ({ body }) => {
   }
 
   const payload = { id: user.id };
-  const token = sign(payload);
-
-  return { message: 'ok', token };
+  return sign(payload);
 };
 
-export const refreshToken = async ({ user }) => {
+export const refreshToken = async ({ user }: ThymeRequest) => {
+  if (!user) {
+    throw new Error('Missing user auth object');
+  }
+
   const payload = { id: user.id };
   const token = sign(payload);
 
-  return { message: 'ok', token };
+  return token;
 };
 
-export const register = async ({ body }) => {
+export const register = async ({ body }: ThymeRequest) => {
   const { email, password } = body;
 
-  if (!email || !password) {
+  if (!email || !password || typeof password !== 'string') {
     throw new Error('Missing email / password in request');
   }
 
