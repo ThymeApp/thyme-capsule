@@ -1,7 +1,25 @@
-import { login } from './user';
+import { register, login } from './user';
 
 describe('users', () => {
-  it('Should work', () => {
-    expect(1).toBe(1);
+  it('Should be able to register', async () => {
+    const body = {
+      email: 'test@email.com',
+      password: 'secret_password',
+    };
+
+    const response = await register({ body });
+
+    expect(response).toMatch(/^[A-Za-z0-9]+\.[A-Za-z0-9]+\.[A-Za-z0-9]+$/);
+  });
+
+  it('Should not be able to register twice', async () => {
+    const body = {
+      email: 'test@email.com',
+      password: 'secret_password',
+    };
+
+    const response = await register({ body });
+
+    expect(response).toMatch(/^[A-Za-z0-9]+\.[A-Za-z0-9]+\.[A-Za-z0-9]+$/);
   });
 });

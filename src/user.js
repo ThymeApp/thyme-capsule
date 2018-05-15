@@ -7,6 +7,11 @@ import type { ThymeRequest } from './types';
 import { sign } from './passport';
 import { User } from './database';
 
+function tokenForUser(user: { id: string }): string {
+  const payload = { id: user.id };
+  return sign(payload);
+}
+
 export const login = async ({ body }: ThymeRequest) => {
   const { email, password } = body;
 
@@ -26,8 +31,7 @@ export const login = async ({ body }: ThymeRequest) => {
     throw new Error('Invalid email / password combination');
   }
 
-  const payload = { id: user.id };
-  return sign(payload);
+  return tokenForUser(user);
 };
 
 export const refreshToken = async ({ user }: ThymeRequest) => {
@@ -35,10 +39,7 @@ export const refreshToken = async ({ user }: ThymeRequest) => {
     throw new Error('Missing user auth object');
   }
 
-  const payload = { id: user.id };
-  const token = sign(payload);
-
-  return token;
+  return tokenForUser(user);
 };
 
 export const register = async ({ body }: ThymeRequest) => {
@@ -66,5 +67,5 @@ export const register = async ({ body }: ThymeRequest) => {
 
   const createdUser = await User.create({ email, password: hash });
 
-  return createdUser.toObject();
+  return tokenForUser(createdUser);
 };

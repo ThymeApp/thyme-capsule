@@ -2,7 +2,10 @@
 
 import Sequelize from 'sequelize';
 
-const sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite::memory:', { logging: false });
+const sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite::memory:', {
+  logging: console.log, // eslint-disable-line
+  operatorsAliases: false,
+});
 
 export const User = sequelize.define('User', {
   id: {
