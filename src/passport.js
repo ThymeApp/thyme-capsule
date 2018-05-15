@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { User } from './database';
 
 const options = {
+  expiresIn: '21d',
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET || 'thyme',
 };

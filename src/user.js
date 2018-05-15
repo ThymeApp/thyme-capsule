@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt';
 import { sign } from './passport';
 import { User } from './database';
 
-export const login = async ({ email, password }) => {
+export const login = async ({ body }) => {
+  const { email, password } = body;
+
   if (!email || !password) {
     throw new Error('Missing email / password in request');
   }
@@ -26,7 +28,16 @@ export const login = async ({ email, password }) => {
   return { message: 'ok', token };
 };
 
-export const register = async ({ email, password }) => {
+export const refreshToken = async ({ user }) => {
+  const payload = { id: user.id };
+  const token = sign(payload);
+
+  return { message: 'ok', token };
+};
+
+export const register = async ({ body }) => {
+  const { email, password } = body;
+
   if (!email || !password) {
     throw new Error('Missing email / password in request');
   }
