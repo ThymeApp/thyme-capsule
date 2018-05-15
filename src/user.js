@@ -3,62 +3,51 @@ import bcrypt from 'bcrypt';
 import { sign } from './passport';
 import { User } from './database';
 
-export const login = async (req, res) => {
-  const { email, password } = req.body;
-
+export const login = async ({ email, password }) => {
   if (!email || !password) {
-    res.status(401).json({ message: 'Missing email / password in request' });
-    return;
+    throw new Error('Missing email / password in request');
   }
 
   const user = await User.findOne({ where: { email } });
 
   if (!user) {
-    res.status(401).json({ message: 'Invalid email / password combination' });
-    return;
+    throw new Error('Invalid email / password combination');
   }
 
   const matched = await bcrypt.compare(password, user.password);
 
   if (!matched) {
-    res.status(401).json({ message: 'Invalid email / password combination' });
-    return;
+    throw new Error('Invalid email / password combination');
   }
 
   const payload = { id: user.id };
   const token = sign(payload);
 
-  res.json({ message: 'ok', token });
+  return { message: 'ok', token };
 };
 
-export const register = async (req, res) => {
-  const { email, password } = req.body;
-
+export const register = async ({ email, password }) => {
   if (!email || !password) {
-    res.status(400).json({ message: 'Missing email / password in request' });
-    return;
+    throw new Error('Missing email / password in request');
   }
 
   if (!User.validEmail(email)) {
-    res.status(400).json({ message: 'Invalid email' });
-    return;
+    throw new Error('Invalid email');
   }
 
   if (password.length < 6) {
-    res.status(400).json({ message: 'Password needs to be at least 6 characters long' });
-    return;
+    throw new Error('Password needs to be at least 6 characters long');
   }
 
   const user = await User.findOne({ where: { email } });
 
   if (user) {
-    res.status(400).json({ message: 'Already a user with email' });
-    return;
+    throw new Error('Already a user with email');
   }
 
   const hash = await bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
 
   const createdUser = await User.create({ email, password: hash });
 
-  res.json(createdUser.toObject());
+  return createdUser.toObject();
 };

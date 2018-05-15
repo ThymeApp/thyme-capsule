@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
+import catchError from './middleware';
 import { initialized, authJwt } from './passport';
 import { login, register } from './user';
 
@@ -11,8 +12,8 @@ app.use(initialized);
 app.use(bodyParser.json());
 
 // User endpoints
-app.post('/register', register);
-app.post('/login', login);
+app.post('/register', catchError(400, register));
+app.post('/login', catchError(401, login));
 
 //
 app.get('/secret', authJwt, (req, res) => {
