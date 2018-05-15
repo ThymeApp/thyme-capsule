@@ -4,4 +4,7 @@ module.exports = {
     'flowtype',
   ],
   extends: ['airbnb-base', 'plugin:flowtype/recommended'],
+  env: {
+    jest: true,
+  },
 };

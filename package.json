@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node -r babel-register ./src",
     "lint": "eslint ./src",
-    "flow": "flow"
+    "flow": "flow",
+    "jest": "jest",
+    "test": "npm run lint && npm run flow && npm run jest"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,8 @@
     "mysql2": "^1.5.3",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
-    "sequelize": "^4.37.7"
+    "sequelize": "^4.37.7",
+    "sqlite3": "^4.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -39,6 +42,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-flowtype": "^2.46.3",
     "eslint-plugin-import": "^2.11.0",
-    "flow-bin": "^0.72.0"
+    "flow-bin": "^0.72.0",
+    "jest": "^22.4.3"
   }
 }
