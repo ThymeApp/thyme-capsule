@@ -36,6 +36,4 @@ User.prototype.toObject = function toObject() {
   };
 };
 
-sequelize.sync();
-
 export default sequelize;
