@@ -12,7 +12,7 @@ function tokenForUser(user: { id: string }): string {
   return sign(payload);
 }
 
-export const login = async ({ body }: ThymeRequest) => {
+export const login = async ({ body }: ThymeRequest): Promise<string> => {
   const { email, password } = body;
 
   if (!email || !password) {
@@ -34,7 +34,7 @@ export const login = async ({ body }: ThymeRequest) => {
   return tokenForUser(user);
 };
 
-export const refreshToken = async ({ user }: ThymeRequest) => {
+export const refreshToken = async ({ user }: ThymeRequest): Promise<string> => {
   if (!user) {
     throw new Error('Missing user auth object');
   }
@@ -42,7 +42,7 @@ export const refreshToken = async ({ user }: ThymeRequest) => {
   return tokenForUser(user);
 };
 
-export const register = async ({ body }: ThymeRequest) => {
+export const register = async ({ body }: ThymeRequest): Promise<string> => {
   const { email, password } = body;
 
   if (!email || !password || typeof password !== 'string') {
