@@ -2,6 +2,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import catchError from './middleware';
 import { initialized, authJwt } from './passport';
@@ -15,6 +16,7 @@ const app = express();
 // Register middleware
 app.use(initialized);
 app.use(bodyParser.json());
+app.use(cors());
 
 // User endpoints
 app.post('/register', catchError(400, register));
