@@ -19,7 +19,11 @@ const strategy = new Strategy(options, async (payload, next) => {
 
 passport.use(strategy);
 
-export const sign = (payload: any) => jwt.sign(payload, options.secretOrKey);
+export const sign = (payload: any) => jwt.sign(
+  payload,
+  options.secretOrKey,
+  { expiresIn: options.expiresIn },
+);
 
 export const authJwt = passport.authenticate('jwt', { session: false });
 
