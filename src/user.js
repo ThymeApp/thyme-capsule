@@ -12,6 +12,10 @@ function tokenForUser(user: { id: string }): string {
   return sign(payload);
 }
 
+function createPasswordHash(password: string): Promise<string> {
+  return bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
+}
+
 export const login = async ({ body }: ThymeRequest): Promise<string> => {
   const { email, password } = body;
 
@@ -63,9 +67,26 @@ export const register = async ({ body }: ThymeRequest): Promise<string> => {
     throw new Error('Already a user with email');
   }
 
-  const hash = await bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
-
-  const createdUser = await User.create({ email, password: hash });
+  const createdUser = await User.create({
+    email,
+    password: await createPasswordHash(password),
+  });
 
   return tokenForUser(createdUser);
+};
+
+export const changePassword = async ({ user, body }: ThymeRequest): Promise<boolean> => {
+  if (!user) {
+    throw new Error('Missing user auth object');
+  }
+
+  const { password } = body;
+
+  if (typeof password !== 'string' || password.length < 6) {
+    throw new Error('Password needs to be at least 6 characters long');
+  }
+
+  await user.update({ password: await createPasswordHash(password) });
+
+  return true;
 };
