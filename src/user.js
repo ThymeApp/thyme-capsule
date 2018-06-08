@@ -80,10 +80,16 @@ export const changePassword = async ({ user, body }: ThymeRequest): Promise<bool
     throw new Error('Missing user auth object');
   }
 
-  const { password } = body;
+  const { password, currentPassword } = body;
+
+  const matched = await bcrypt.compare(currentPassword, user.password);
+
+  if (!matched) {
+    throw new Error('Current password is incorrect');
+  }
 
   if (typeof password !== 'string' || password.length < 6) {
-    throw new Error('Password needs to be at least 6 characters long');
+    throw new Error('New password needs to be at least 6 characters long');
   }
 
   await user.update({ password: await createPasswordHash(password) });
