@@ -15,7 +15,7 @@ Every feature is in early beta.
 ## Environment variables
 
 ```
-ENV=production/development
+ENV=production/development/test
 PORT=5000
 ENCRYPTION_KEY=key-to-encrypt-the-files
 SALT_ROUNDS=20
