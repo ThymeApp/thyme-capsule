@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node -r babel-register ./src",
+    "production": "ENV=production npm start",
     "lint": "eslint ./src",
     "flow": "flow",
     "jest": "jest",

@@ -1,1 +1,1 @@
-web: ENV=production npm start
+web: npm run production
