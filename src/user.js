@@ -13,7 +13,7 @@ function tokenForUser(user: { id: string }): string {
 }
 
 function createPasswordHash(password: string): Promise<string> {
-  return bcrypt.hash(password, process.env.SALT_ROUNDS || 10);
+  return bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS, 10) || 10);
 }
 
 export const login = async ({ body }: ThymeRequest): Promise<string> => {
