@@ -15,6 +15,11 @@ function read(file: string): Promise<string> {
       path.resolve(__dirname, fileDir, file),
       'utf8', (err, data) => {
         if (err) {
+          if (err.code === 'ENOENT') {
+            resolve('{}');
+            return;
+          }
+
           reject(err);
           return;
         }
