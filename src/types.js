@@ -6,6 +6,10 @@ export type ThymeRequest = {
   user?: {
     id: string;
     password: string;
+    premium: boolean;
     update: (updates: any) => any;
   };
 } & $Request;
+
+export type ThymeCapability = 'project_rates';
+export type ThymeCapabilities = ThymeCapability[];
