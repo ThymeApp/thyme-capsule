@@ -17,7 +17,8 @@ export const User = sequelize.define('User', {
     defaultValue: Sequelize.UUIDV4,
   },
   email: Sequelize.STRING,
-  password: Sequelize.STRING,
+  password: Sequelize.STRING(60),
+  premium: Sequelize.BOOLEAN,
 }, {
   indexes: [
     {
