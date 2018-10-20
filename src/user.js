@@ -2,7 +2,7 @@
 
 import bcrypt from 'bcrypt';
 
-import type { ThymeRequest } from './types';
+import type { ThymeCapabilities, ThymeRequest } from './types';
 
 import { sign } from './passport';
 import { User } from './database';
@@ -96,3 +96,20 @@ export const changePassword = async ({ user, body }: ThymeRequest): Promise<bool
 
   return true;
 };
+
+type AccountInformationResponse = {
+  capabilities: ThymeCapabilities;
+};
+
+export const accountInformation =
+  async ({ user }: ThymeRequest): Promise<AccountInformationResponse> => {
+    if (!user) {
+      throw new Error('Missing user auth object');
+    }
+
+    const capabilities = user.premium ? [
+      'project_rates',
+    ] : [];
+
+    return { capabilities };
+  };
