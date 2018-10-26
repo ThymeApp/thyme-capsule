@@ -23,7 +23,7 @@ app.post('/register', catchError(400, register));
 app.post('/login', catchError(401, login));
 app.post('/refresh-token', authJwt, catchError(401, refreshToken));
 app.post('/change-password', authJwt, catchError(401, changePassword));
-app.post('/account-information', authJwt, catchError(401, accountInformation));
+app.get('/account-information', authJwt, catchError(401, accountInformation));
 
 // File endpoints
 app.post('/save-state', authJwt, catchError(400, saveJson));
