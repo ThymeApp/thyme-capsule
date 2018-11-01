@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "engines": {
-    "node": ">=11.0.0",
-    "npm": ">=6.4.0"
+    "node": "11.0.0",
+    "npm": "6.4.1"
   },
   "scripts": {
     "start": "node -r babel-register ./src",
