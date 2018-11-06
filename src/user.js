@@ -101,15 +101,16 @@ type AccountInformationResponse = {
   capabilities: ThymeCapabilities;
 };
 
-export const accountInformation =
-  async ({ user }: ThymeRequest): Promise<AccountInformationResponse> => {
-    if (!user) {
-      throw new Error('Missing user auth object');
-    }
+export const accountInformation = async ({
+  user,
+}: ThymeRequest): Promise<AccountInformationResponse> => {
+  if (!user) {
+    throw new Error('Missing user auth object');
+  }
 
-    const capabilities = user.premium ? [
-      'project_rates',
-    ] : [];
+  const capabilities = user.premium ? [
+    'project_rates',
+  ] : [];
 
-    return { capabilities };
-  };
+  return { capabilities };
+};

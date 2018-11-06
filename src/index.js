@@ -8,7 +8,13 @@ import catchError from './middleware';
 import { initialized, authJwt } from './passport';
 import sequelize from './database';
 
-import { login, register, refreshToken, changePassword, accountInformation } from './user';
+import {
+  login,
+  register,
+  refreshToken,
+  changePassword,
+  accountInformation,
+} from './user';
 import { saveJson, retrieveJson } from './files';
 
 const app = express();

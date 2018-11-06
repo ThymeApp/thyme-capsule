@@ -4,7 +4,7 @@ import crypto from 'crypto';
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '0cOEgjSy1dqNOo1aujpnzFY2WfblTnC2';
 const IV_LENGTH = 16;
 
-function encrypt(text: string) {
+export function encrypt(text: string) {
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv);
   let encrypted = cipher.update(Buffer.from(text, 'utf-8'));
@@ -14,7 +14,7 @@ function encrypt(text: string) {
   return `${iv.toString('hex')}:${encrypted.toString('hex')}`;
 }
 
-function decrypt(text: string) {
+export function decrypt(text: string) {
   const textParts = text.split(':');
   const iv = Buffer.from(textParts.shift(), 'hex');
   const encryptedText = Buffer.from(textParts.join(':'), 'hex');
@@ -25,5 +25,3 @@ function decrypt(text: string) {
 
   return decrypted.toString();
 }
-
-module.exports = { decrypt, encrypt };

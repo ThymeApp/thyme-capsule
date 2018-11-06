@@ -2,8 +2,9 @@
 
 import Sequelize from 'sequelize';
 
-const connectionUrl =
-  process.env.ENV === 'test' ? 'sqlite::memory:' : process.env.DATABASE_URL || '';
+const connectionUrl = process.env.ENV === 'test'
+  ? 'sqlite::memory:'
+  : process.env.DATABASE_URL || '';
 
 const sequelize = new Sequelize(connectionUrl, {
   logging: process.env.ENV === 'development' ? console.log : () => {}, // eslint-disable-line
