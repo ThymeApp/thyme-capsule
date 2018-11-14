@@ -26,6 +26,12 @@ app.use(initialized);
 app.use(bodyParser.json());
 app.use(cors());
 
+// Change default headers
+app.use((req: $Request, res: $Response, next) => {
+  res.setHeader('API-Consumer', 'Thyme');
+  next();
+});
+
 // App status endpoints
 app.get('/', (req: $Request, res: $Response) => { res.end('Thyme Capsule is running'); });
 
