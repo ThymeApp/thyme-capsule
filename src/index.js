@@ -24,7 +24,7 @@ const app = express();
 // Register middleware
 app.use(initialized);
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({ exposedHeaders: 'API-Consumer' }));
 
 // Change default headers
 app.use((req: $Request, res: $Response, next) => {
