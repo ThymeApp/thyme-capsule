@@ -4,6 +4,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
+import type { $Request, $Response } from 'express';
+
 import catchError from './middleware';
 import { initialized, authJwt } from './passport';
 import sequelize from './database';
@@ -23,6 +25,9 @@ const app = express();
 app.use(initialized);
 app.use(bodyParser.json());
 app.use(cors());
+
+// App status endpoints
+app.get('/', (req: $Request, res: $Response) => { res.end('Thyme Capsule is running'); });
 
 // User endpoints
 app.post('/register', catchError(400, register));
