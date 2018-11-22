@@ -11,5 +11,5 @@ export type ThymeRequest = {
   };
 } & $Request;
 
-export type ThymeCapability = 'project_rates';
+export type ThymeCapability = 'project_rates' | 'insights';
 export type ThymeCapabilities = ThymeCapability[];
