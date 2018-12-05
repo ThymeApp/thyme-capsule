@@ -109,6 +109,7 @@ export const accountInformation = async ({
   }
 
   const capabilities = user.premium ? [
+    'premium',
     'project_rates',
     'insights',
   ] : [];
