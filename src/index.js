@@ -18,7 +18,7 @@ import {
   accountInformation,
 } from './user';
 import { saveJson, retrieveJson } from './files';
-import { buySubscription } from './subscription';
+import { buySubscription, stripeWebhook } from './subscription';
 
 const app = express();
 
@@ -45,6 +45,7 @@ app.get('/account-information', authJwt, catchError(401, accountInformation));
 
 // Subscription endpoints
 app.post('/buy-subscription', authJwt, catchError(401, buySubscription));
+app.all('/stripe', stripeWebhook);
 
 // File endpoints
 app.post('/save-state', authJwt, catchError(400, saveJson));
