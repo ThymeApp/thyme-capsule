@@ -69,4 +69,10 @@ Customer.prototype.toObject = function toObject() {
   };
 };
 
+export const StripeLog = sequelize.define('StripeLog', {
+  type: Sequelize.STRING,
+  event: Sequelize.JSON,
+});
+
+
 export default sequelize;

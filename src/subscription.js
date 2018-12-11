@@ -4,7 +4,7 @@ import type { $Response } from 'express';
 
 import stripe from './stripe';
 
-import { Customer } from './database';
+import { Customer, StripeLog } from './database';
 
 import type { ThymeRequest } from './types';
 
@@ -64,6 +64,8 @@ export const stripeWebhook = async (req: ThymeRequest, res: $Response) => {
     );
 
     const { type, data } = event;
+
+    StripeLog.create({ event, type });
 
     switch (type) {
       case 'invoice.payment_succeeded':
