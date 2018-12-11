@@ -18,6 +18,7 @@ import {
   accountInformation,
 } from './user';
 import { saveJson, retrieveJson } from './files';
+import { buySubscription } from './subscription';
 
 const app = express();
 
@@ -41,6 +42,9 @@ app.post('/login', catchError(401, login));
 app.post('/refresh-token', authJwt, catchError(401, refreshToken));
 app.post('/change-password', authJwt, catchError(401, changePassword));
 app.get('/account-information', authJwt, catchError(401, accountInformation));
+
+// Subscription endpoints
+app.post('/buy-subscription', authJwt, catchError(401, buySubscription));
 
 // File endpoints
 app.post('/save-state', authJwt, catchError(400, saveJson));

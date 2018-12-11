@@ -2,9 +2,10 @@
 import type { $Request } from 'express';
 
 export type ThymeRequest = {
-  body: { [key: string]: null | string | boolean | number };
+  body: { [key: string]: any };
   user?: {
     id: string;
+    email: string;
     password: string;
     premium: boolean;
     update: (updates: any) => any;

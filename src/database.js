@@ -41,4 +41,32 @@ User.prototype.toObject = function toObject() {
   };
 };
 
+export const Customer = sequelize.define('Customer', {
+  id: {
+    type: Sequelize.UUID,
+    primaryKey: true,
+    defaultValue: Sequelize.UUIDV4,
+  },
+  name: Sequelize.STRING,
+  address: Sequelize.STRING,
+  postalCode: Sequelize.STRING,
+  city: Sequelize.STRING,
+  country: Sequelize.STRING,
+  stripeCustomerId: Sequelize.STRING,
+});
+
+Customer.belongsTo(User);
+
+Customer.prototype.toObject = function toObject() {
+  return {
+    id: this.id,
+    name: this.name,
+    address: this.address,
+    postalCode: this.postalCode,
+    city: this.city,
+    country: this.country,
+    stripeCustomerId: this.stripeCustomerId,
+  };
+};
+
 export default sequelize;
