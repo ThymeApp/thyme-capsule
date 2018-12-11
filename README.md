@@ -32,4 +32,5 @@ JWT_SECRET=jwt-hash-secret
 STRIPE_KEY=stripe-secret-key
 STRIPE_PLAN_EUR=stripe-plan-id
 STRIPE_PLAN_USD=stripe-plan-id
+STRIPE_WEBHOOK_SIGNATURE=stripe-webhook-signing-secret
 ```

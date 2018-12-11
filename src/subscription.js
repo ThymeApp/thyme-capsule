@@ -53,33 +53,47 @@ export const buySubscription = async ({
   return true;
 };
 
-export const stripeWebhook = async ({ body }: ThymeRequest, res: $Response) => {
-  const { type } = body;
+export const stripeWebhook = async (req: ThymeRequest, res: $Response) => {
+  const sig = req.headers['stripe-signature'];
 
-  switch (type) {
-    case 'invoice.payment_succeeded':
-    case 'customer.subscription.deleted':
-    case 'invoice.payment_failed': {
-      const customerId = body.data.object.customer;
+  try {
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_WEBHOOK_SIGNATURE,
+    );
 
-      try {
-        const customer = await Customer.findOne({ where: { stripeCustomerId: customerId } });
-        const user = await customer.getUser();
+    const { type, data } = event;
 
-        if (type === 'invoice.payment_succeeded') {
-          user.update({ premium: true });
+    switch (type) {
+      case 'invoice.payment_succeeded':
+      case 'customer.subscription.deleted':
+      case 'invoice.payment_failed': {
+        const customerId = data.object.customer;
+
+        try {
+          const customer = await Customer.findOne({ where: { stripeCustomerId: customerId } });
+          const user = await customer.getUser();
+
+          if (type === 'invoice.payment_succeeded') {
+            user.update({ premium: true });
+          }
+
+          if (type === 'invoice.payment_failed' || type === 'customer.subscription.deleted') {
+            user.update({ premium: false });
+          }
+        } catch (e) {
+          console.error(e);
         }
 
-        if (type === 'invoice.payment_failed' || type === 'customer.subscription.deleted') {
-          user.update({ premium: false });
-        }
-      } catch (e) {
-        console.error(e);
+        return res.status(200).end();
       }
-
-      return res.end(JSON.stringify(true));
+      default:
+        return res.status(200).end();
     }
-    default:
-      return res.end(JSON.stringify(true));
+  } catch (err) {
+    res.status(400).end();
   }
+
+  return res.status(200).end();
 };

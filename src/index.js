@@ -24,7 +24,6 @@ const app = express();
 
 // Register middleware
 app.use(initialized);
-app.use(bodyParser.json());
 app.use(cors({ exposedHeaders: 'API-Consumer' }));
 
 // Change default headers
@@ -37,19 +36,19 @@ app.use((req: $Request, res: $Response, next) => {
 app.get('/', (req: $Request, res: $Response) => { res.end('Thyme Capsule is running'); });
 
 // User endpoints
-app.post('/register', catchError(400, register));
-app.post('/login', catchError(401, login));
-app.post('/refresh-token', authJwt, catchError(401, refreshToken));
-app.post('/change-password', authJwt, catchError(401, changePassword));
-app.get('/account-information', authJwt, catchError(401, accountInformation));
+app.post('/register', bodyParser.json(), catchError(400, register));
+app.post('/login', bodyParser.json(), catchError(401, login));
+app.post('/refresh-token', bodyParser.json(), authJwt, catchError(401, refreshToken));
+app.post('/change-password', bodyParser.json(), authJwt, catchError(401, changePassword));
+app.get('/account-information', bodyParser.json(), authJwt, catchError(401, accountInformation));
 
 // Subscription endpoints
-app.post('/buy-subscription', authJwt, catchError(401, buySubscription));
-app.all('/stripe', stripeWebhook);
+app.post('/buy-subscription', bodyParser.json(), authJwt, catchError(401, buySubscription));
+app.all('/stripe', bodyParser.raw({ type: '*/*' }), stripeWebhook);
 
 // File endpoints
-app.post('/save-state', authJwt, catchError(400, saveJson));
-app.get('/get-state', authJwt, catchError(404, retrieveJson));
+app.post('/save-state', bodyParser.json(), authJwt, catchError(400, saveJson));
+app.get('/get-state', bodyParser.json(), authJwt, catchError(404, retrieveJson));
 
 const port = process.env.PORT || 4000;
 
