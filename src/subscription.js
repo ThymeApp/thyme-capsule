@@ -55,7 +55,7 @@ export const buySubscription = async ({
 
 type SubscriptionInfo = {
   periodEnd: number;
-  plan: string;
+  plan: 'EUR' | 'USD';
 };
 
 export const listSubscriptions = async ({ user }: ThymeRequest): Promise<SubscriptionInfo[]> => {
@@ -71,7 +71,7 @@ export const listSubscriptions = async ({ user }: ThymeRequest): Promise<Subscri
 
   return subscriptions.data.map(item => ({
     periodEnd: item.current_period_end,
-    plan: item.plan.id,
+    plan: process.env.STRIPE_PLAN_EUR === item.plan.id ? 'EUR' : 'USD',
   }));
 };
 
