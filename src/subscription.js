@@ -53,6 +53,28 @@ export const buySubscription = async ({
   return true;
 };
 
+type SubscriptionInfo = {
+  periodEnd: number;
+  plan: string;
+};
+
+export const listSubscriptions = async ({ user }: ThymeRequest): Promise<SubscriptionInfo[]> => {
+  if (!user) {
+    throw new Error('Missing user auth object');
+  }
+
+  const customer = await Customer.findOne({ where: { UserId: user.id } });
+
+  const subscriptions = await stripe.subscriptions.list({
+    customer: customer.stripeCustomerId,
+  });
+
+  return subscriptions.data.map(item => ({
+    periodEnd: item.current_period_end,
+    plan: item.plan.id,
+  }));
+};
+
 export const stripeWebhook = async (req: ThymeRequest, res: $Response) => {
   const sig = req.headers['stripe-signature'];
 
