@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { addWeeks, isAfter } from 'date-fns';
 
 import type { ThymeRequest } from './types';
 
@@ -9,7 +10,7 @@ import { encrypt, decrypt } from './encryption';
 
 const fileDir = '../tmp/';
 
-function read(file: string): Promise<string> {
+function read(file: string): Promise<any> {
   return new Promise((resolve, reject) => {
     fs.readFile(
       path.resolve(__dirname, fileDir, file),
@@ -56,13 +57,24 @@ export const saveJson = async ({ body, user }: ThymeRequest): Promise<boolean> =
   return write(user.id, JSON.stringify(body));
 };
 
-export const retrieveJson = async ({ user }: ThymeRequest): Promise<string> => {
+export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
   if (!user || !user.id) {
     throw new Error('No user in auth token');
   }
 
   try {
-    return await read(user.id);
+    const data = await read(user.id);
+
+    if (user.premium) {
+      return data;
+    }
+
+    // limit timesheet data when user is not premium
+    const filterBefore = addWeeks(new Date(), -4);
+
+    return Object.assign({}, data, {
+      time: data.time.filter(time => isAfter(time.end, filterBefore)),
+    });
   } catch (e) {
     throw new Error('Error getting state');
   }
