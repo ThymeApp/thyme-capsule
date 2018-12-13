@@ -7,6 +7,7 @@ import stripe from '../helpers/stripe';
 import { Customer, StripeLog } from '../database';
 
 import type { ThymeRequest } from '../types';
+import sendMail from '../helpers/mail';
 
 export const buySubscription = async ({
   user,
@@ -101,6 +102,12 @@ export const stripeWebhook = async (req: ThymeRequest, res: $Response) => {
 
           if (type === 'invoice.payment_succeeded') {
             user.update({ premium: true });
+
+            sendMail(
+              'gaya@theclevernode.com',
+              'New payment for Thyme',
+              `Payment by ${user.email} of ${data.object.currency === 'eur' ? '€' : '$'} ${data.object.total / 100}`,
+            );
           }
 
           if (type === 'invoice.payment_failed' || type === 'customer.subscription.deleted') {
