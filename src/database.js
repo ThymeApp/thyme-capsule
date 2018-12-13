@@ -71,8 +71,7 @@ Customer.prototype.toObject = function toObject() {
 
 export const StripeLog = sequelize.define('StripeLog', {
   type: Sequelize.STRING,
-  event: Sequelize.JSON,
+  event: Sequelize.TEXT,
 });
-
 
 export default sequelize;
