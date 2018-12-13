@@ -8,7 +8,7 @@ import type { ThymeRequest } from '../types';
 
 import { encrypt, decrypt } from '../helpers/encryption';
 
-const fileDir = '../tmp/';
+const fileDir = '../../tmp/';
 
 function read(file: string): Promise<any> {
   return new Promise((resolve, reject) => {
