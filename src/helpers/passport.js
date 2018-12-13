@@ -13,7 +13,7 @@ const options = {
 };
 
 const strategy = new Strategy(options, async (payload, next) => {
-  const user = await User.findById(payload.id);
+  const user = await User.findByPk(payload.id);
   next(null, user);
 });
 
