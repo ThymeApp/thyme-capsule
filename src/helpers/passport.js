@@ -4,7 +4,7 @@ import passport from 'passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import jwt from 'jsonwebtoken';
 
-import { User } from './database';
+import { User } from '../database';
 
 const options = {
   expiresIn: '21d',

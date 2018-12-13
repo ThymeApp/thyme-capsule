@@ -4,9 +4,9 @@ import fs from 'fs';
 import path from 'path';
 import { addWeeks, isAfter } from 'date-fns';
 
-import type { ThymeRequest } from './types';
+import type { ThymeRequest } from '../types';
 
-import { encrypt, decrypt } from './encryption';
+import { encrypt, decrypt } from '../helpers/encryption';
 
 const fileDir = '../tmp/';
 

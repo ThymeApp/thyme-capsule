@@ -6,8 +6,8 @@ import cors from 'cors';
 
 import type { $Request, $Response } from 'express';
 
-import catchError from './middleware';
-import { initialized, authJwt } from './passport';
+import catchError from './helpers/middleware';
+import { initialized, authJwt } from './helpers/passport';
 import sequelize from './database';
 
 import {
@@ -16,9 +16,9 @@ import {
   refreshToken,
   changePassword,
   accountInformation,
-} from './user';
-import { saveJson, retrieveJson } from './files';
-import { buySubscription, listSubscriptions, stripeWebhook } from './subscription';
+} from './middlewares/user';
+import { saveJson, retrieveJson } from './middlewares/files';
+import { buySubscription, listSubscriptions, stripeWebhook } from './middlewares/subscription';
 
 const app = express();
 

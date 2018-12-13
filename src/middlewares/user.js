@@ -2,10 +2,10 @@
 
 import bcrypt from 'bcrypt';
 
-import type { ThymeCapabilities, ThymeRequest } from './types';
+import type { ThymeCapabilities, ThymeRequest } from '../types';
 
-import { sign } from './passport';
-import { User } from './database';
+import { sign } from '../helpers/passport';
+import { User } from '../database';
 
 function tokenForUser(user: { id: string }): string {
   const payload = { id: user.id };

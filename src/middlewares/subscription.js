@@ -2,11 +2,11 @@
 
 import type { $Response } from 'express';
 
-import stripe from './stripe';
+import stripe from '../helpers/stripe';
 
-import { Customer, StripeLog } from './database';
+import { Customer, StripeLog } from '../database';
 
-import type { ThymeRequest } from './types';
+import type { ThymeRequest } from '../types';
 
 export const buySubscription = async ({
   user,

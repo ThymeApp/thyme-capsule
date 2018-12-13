@@ -1,5 +1,5 @@
 import sequelize from './database';
-import { register, login } from './user';
+import { register, login } from './middlewares/user';
 
 const matchToken = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/;
 

@@ -1,7 +1,7 @@
 // @flow
 
 import type { $Response } from 'express';
-import type { ThymeRequest } from './types';
+import type { ThymeRequest } from '../types';
 
 function catchError(errCode: number = 500, next: (req: ThymeRequest) => Promise<any>) {
   return async (req: ThymeRequest, res: $Response) => {
