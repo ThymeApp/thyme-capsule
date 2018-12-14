@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/Gaya/thyme-service#readme",
   "dependencies": {
+    "@sentry/node": "^4.4.2",
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",

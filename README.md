@@ -35,4 +35,5 @@ STRIPE_PLAN_USD=stripe-plan-id
 STRIPE_WEBHOOK_SIGNATURE=stripe-webhook-signing-secret
 MAILGUN_DOMAIN=mg.usethyme.com
 MAILGUN_API_KEY=secret-key
+SENTRY_DSN=sentry-dns
 ```

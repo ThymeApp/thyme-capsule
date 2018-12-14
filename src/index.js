@@ -7,6 +7,7 @@ import cors from 'cors';
 import type { $Request, $Response } from 'express';
 
 import catchError from './helpers/middleware';
+import setupErrorLogging from './helpers/errorLogging';
 import { initialized, authJwt } from './helpers/passport';
 import sequelize from './database';
 
@@ -25,6 +26,7 @@ const app = express();
 // Register middleware
 app.use(initialized);
 app.use(cors({ exposedHeaders: 'API-Consumer' }));
+setupErrorLogging(app);
 
 // Parse body for every path but /stripe
 app.use(/^\/(?!stripe).+/, bodyParser.json());
