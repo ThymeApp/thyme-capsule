@@ -20,6 +20,7 @@ import {
 } from './middlewares/user';
 import { saveJson, retrieveJson } from './middlewares/files';
 import { buySubscription, listSubscriptions, stripeWebhook } from './middlewares/subscription';
+import currentVersion from './middlewares/version';
 
 const app = express();
 
@@ -39,6 +40,9 @@ app.use((req: $Request, res: $Response, next) => {
 
 // App status endpoints
 app.get('/', (req: $Request, res: $Response) => { res.end('Thyme Capsule is running'); });
+
+// App version endpoint
+app.get('/version', currentVersion);
 
 // User endpoints
 app.post('/register', catchError(400, register));
