@@ -66,6 +66,10 @@ export const listSubscriptions = async ({ user }: ThymeRequest): Promise<Subscri
 
   const customer = await Customer.findOne({ where: { UserId: user.id } });
 
+  if (!customer) {
+    return [];
+  }
+
   const subscriptions = await stripe.subscriptions.list({
     customer: customer.stripeCustomerId,
   });
