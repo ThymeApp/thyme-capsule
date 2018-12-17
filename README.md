@@ -29,6 +29,7 @@ ENCRYPTION_KEY=secret-key-for-encryption
 SALT_ROUNDS=10
 DATABASE_URL=database://connection-url
 JWT_SECRET=jwt-hash-secret
+APP_PACKAGE_LOCATION=https://raw.githubusercontent.com/ThymeApp/thyme/master/package.json
 STRIPE_KEY=stripe-secret-key
 STRIPE_PLAN_EUR=stripe-plan-id
 STRIPE_PLAN_USD=stripe-plan-id
