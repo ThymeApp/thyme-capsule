@@ -9,7 +9,7 @@ const currentVersion = async (req: $Request, res: $Response) => {
     .then(data => data.version)
     .catch(() => '0.0.0');
 
-  res.end(version);
+  res.end(JSON.stringify(version));
 };
 
 export default currentVersion;
