@@ -92,7 +92,7 @@ export const stripeWebhook = async (req: ThymeRequest, res: $Response) => {
 
     const { type, data } = event;
 
-    StripeLog.create({ event, type });
+    StripeLog.create({ event: JSON.stringify(event), type });
 
     switch (type) {
       case 'invoice.payment_succeeded':
