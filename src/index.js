@@ -30,7 +30,7 @@ app.use(cors({ exposedHeaders: 'API-Consumer' }));
 setupErrorLogging(app);
 
 // Parse body for every path but /stripe
-app.use(/^\/(?!stripe).+/, bodyParser.json());
+app.use(/^\/(?!stripe).+/, bodyParser.json({ limit: '5mb' }));
 
 // Change default headers
 app.use((req: $Request, res: $Response, next) => {
