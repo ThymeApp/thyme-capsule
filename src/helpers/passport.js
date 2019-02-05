@@ -25,6 +25,8 @@ export const sign = (payload: any) => jwt.sign(
   { expiresIn: options.expiresIn },
 );
 
+export const verify = (token: string) => jwt.verify(token, options.secretOrKey);
+
 export const authJwt = passport.authenticate('jwt', { session: false });
 
 export const initialized = passport.initialize();
