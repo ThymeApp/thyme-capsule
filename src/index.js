@@ -3,6 +3,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import http from 'http';
 
 import type { $Request, $Response } from 'express';
 
@@ -10,9 +11,13 @@ import setupErrorLogging from './helpers/errorLogging';
 import { initialized } from './helpers/passport';
 import sequelize from './database';
 
+import connectSocketIO from './middlewares/socket';
+
 import registerRoutes from './routes';
 
+const port = process.env.PORT || 4000;
 const app = express();
+const server = http.createServer(app);
 
 // Register middleware
 app.use(initialized);
@@ -29,11 +34,9 @@ app.use((req: $Request, res: $Response, next) => {
 });
 
 registerRoutes(app);
+connectSocketIO(server);
 
-const port = process.env.PORT || 4000;
-
-// eslint-disable-next-line no-console
-app.listen(port, async () => {
+server.listen(port, async () => {
   await sequelize.sync();
   console.info(`Server started on port ${port}`);
 });
