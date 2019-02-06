@@ -73,24 +73,20 @@ export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
   }
 };
 
-export const saveTempItem = async ({ body, user }: ThymeRequest): Promise<boolean> => {
-  if (!user || !user.id) {
-    throw new Error('No user in auth token');
-  }
-
-  const fileName = `temp_${user.id}`;
+export const saveTempItem = async (userId: string, item: any): Promise<boolean> => {
+  const fileName = `temp_${userId}`;
 
   try {
     const currentTempItem = await read(fileName);
 
-    if (isAfter(currentTempItem.updatedAt, body.updatedAt)) {
+    if (isAfter(currentTempItem.updatedAt, item.updatedAt)) {
       return false;
     }
   } catch (e) {
     // fail silently
   }
 
-  return write(fileName, JSON.stringify(body));
+  return write(fileName, JSON.stringify(item));
 };
 
 export const retrieveTempItem = async ({ user }: ThymeRequest): Promise<any> => {
