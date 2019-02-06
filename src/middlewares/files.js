@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { addWeeks, isAfter } from 'date-fns';
+import { isAfter } from 'date-fns';
 
 import type { ThymeRequest } from '../types';
 
@@ -62,15 +62,33 @@ export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
     throw new Error('No user in auth token');
   }
 
+  if (!user.premium) {
+    throw new Error('Not a premium user');
+  }
+
   try {
-    const data = await read(user.id);
-
-    if (!user.premium) {
-      throw new Error('Not a premium user');
-    }
-
-    return data;
+    return read(user.id);
   } catch (e) {
     throw new Error('Error getting state');
   }
+};
+
+export const saveTempItem = async ({ body, user }: ThymeRequest): Promise<boolean> => {
+  if (!user || !user.id) {
+    throw new Error('No user in auth token');
+  }
+
+  const fileName = `temp_${user.id}`;
+
+  try {
+    const currentTempItem = await read(fileName);
+
+    if (isAfter(currentTempItem.updatedAt, body.updatedAt)) {
+      return false;
+    }
+  } catch (e) {
+    // fail silently
+  }
+
+  return write(fileName, JSON.stringify(body));
 };
