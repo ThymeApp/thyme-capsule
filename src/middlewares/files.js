@@ -65,18 +65,11 @@ export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
   try {
     const data = await read(user.id);
 
-    if (user.premium) {
-      return data;
+    if (!user.premium) {
+      throw new Error('Not a premium user');
     }
 
-    // limit timesheet data when user is not premium
-    const filterBefore = addWeeks(new Date(), -4);
-
-    const timeEntries = data.time || [];
-
-    return Object.assign({}, data, {
-      time: timeEntries.filter(time => isAfter(time.end, filterBefore)),
-    });
+    return data;
   } catch (e) {
     throw new Error('Error getting state');
   }
