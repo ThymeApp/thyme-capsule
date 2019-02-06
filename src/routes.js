@@ -12,7 +12,12 @@ import {
   register,
 } from './middlewares/user';
 import { buySubscription, listSubscriptions, stripeWebhook } from './middlewares/subscription';
-import { retrieveJson, saveJson, saveTempItem } from './middlewares/files';
+import {
+  retrieveJson,
+  saveJson,
+  saveTempItem,
+  retrieveTempItem,
+} from './middlewares/files';
 
 import catchError from './helpers/middleware';
 import { authJwt } from './helpers/passport';
@@ -40,4 +45,5 @@ export default function registerRoutes(app: express$Application) {
   app.post('/save-state', authJwt, catchError(400, saveJson));
   app.get('/get-state', authJwt, catchError(404, retrieveJson));
   app.post('/save-temporary', authJwt, catchError(400, saveTempItem));
+  app.get('/get-temporary', authJwt, catchError(404, retrieveTempItem));
 }

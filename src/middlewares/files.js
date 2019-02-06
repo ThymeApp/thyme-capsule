@@ -92,3 +92,19 @@ export const saveTempItem = async ({ body, user }: ThymeRequest): Promise<boolea
 
   return write(fileName, JSON.stringify(body));
 };
+
+export const retrieveTempItem = async ({ user }: ThymeRequest): Promise<any> => {
+  if (!user || !user.id) {
+    throw new Error('No user in auth token');
+  }
+
+  if (!user.premium) {
+    throw new Error('Not a premium user');
+  }
+
+  try {
+    return read(`temp_${user.id}`);
+  } catch (e) {
+    throw new Error('Error getting temporary item');
+  }
+};
