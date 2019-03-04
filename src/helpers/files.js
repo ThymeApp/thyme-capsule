@@ -3,13 +3,13 @@
 import fs from 'fs';
 import path from 'path';
 
-import { File, User } from '../database';
+import { File } from '../database';
 
 import { decrypt, encrypt } from './encryption';
 
 const fileDir = '../../tmp/';
 
-function remove(file: string): Promise<any> {
+export function remove(file: string): Promise<any> {
   return new Promise((resolve, reject) => {
     fs.unlink(
       path.resolve(__dirname, fileDir, file),
@@ -25,7 +25,7 @@ function remove(file: string): Promise<any> {
   });
 }
 
-function read(file: string): Promise<any> {
+export function read(file: string): Promise<any> {
   return new Promise((resolve, reject) => {
     fs.readFile(
       path.resolve(__dirname, fileDir, file),
@@ -64,13 +64,13 @@ function write(file: string, contents: string): Promise<boolean> {
   });
 }
 
-export async function readFile(type: string, userId: string) {
+export async function readFile(type: string, userId: string): Promise<any> {
   const fileEntry = await File.findOne({
     where: {
       type,
       UserId: userId,
     },
-    order: ['createdAt', 'DESC'],
+    order: [['createdAt', 'DESC']],
   });
 
   if (!fileEntry) {
@@ -87,26 +87,4 @@ export async function saveFile(type: string, userId: string, content: string) {
   });
 
   return write(fileEntry.id, content);
-}
-
-export async function migrateOld() {
-  const users = await User.all();
-
-  return Promise.all(users.map(async (user) => {
-    const content = await read(user.id);
-
-    if (Object.keys(content).length > 0) {
-      // there is some content here
-      await saveFile('state', user.id, JSON.stringify(content));
-      await remove(user.id);
-    }
-
-    const tempContent = await read(`temp_${user.id}`);
-
-    if (Object.keys(tempContent).length > 0) {
-      // there is some content here
-      await saveFile('tempItem', user.id, JSON.stringify(tempContent));
-      await remove(`temp_${user.id}`);
-    }
-  }));
 }

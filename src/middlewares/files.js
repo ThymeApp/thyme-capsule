@@ -1,60 +1,17 @@
 // @flow
 
-import fs from 'fs';
-import path from 'path';
 import { isAfter } from 'date-fns';
 
 import type { ThymeRequest } from '../types';
 
-import { encrypt, decrypt } from '../helpers/encryption';
-
-const fileDir = '../../tmp/';
-
-function read(file: string): Promise<any> {
-  return new Promise((resolve, reject) => {
-    fs.readFile(
-      path.resolve(__dirname, fileDir, file),
-      'utf8', (err, data) => {
-        if (err) {
-          if (err.code === 'ENOENT') {
-            resolve('{}');
-            return;
-          }
-
-          reject(err);
-          return;
-        }
-
-        resolve(JSON.parse(decrypt(data)));
-      },
-    );
-  });
-}
-
-function write(file: string, contents: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(
-      path.resolve(__dirname, fileDir, file),
-      encrypt(contents),
-      'utf8',
-      (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        resolve(true);
-      },
-    );
-  });
-}
+import { readFile, saveFile } from '../helpers/files';
 
 export const saveJson = async ({ body, user }: ThymeRequest): Promise<boolean> => {
   if (!user || !user.id) {
     throw new Error('No user in auth token');
   }
 
-  return write(user.id, JSON.stringify(body));
+  return saveFile('state', user.id, JSON.stringify(body));
 };
 
 export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
@@ -67,26 +24,24 @@ export const retrieveJson = async ({ user }: ThymeRequest): Promise<any> => {
   }
 
   try {
-    return read(user.id);
+    return readFile('state', user.id);
   } catch (e) {
     throw new Error('Error getting state');
   }
 };
 
 export const saveTempItem = async (userId: string, item: any): Promise<boolean> => {
-  const fileName = `temp_${userId}`;
-
   try {
-    const currentTempItem = await read(fileName);
+    const currentTempItem = await readFile('tempItem', userId);
 
-    if (isAfter(currentTempItem.updatedAt, item.updatedAt)) {
+    if (currentTempItem.updatedAt && isAfter(currentTempItem.updatedAt, item.updatedAt)) {
       return false;
     }
   } catch (e) {
     // fail silently
   }
 
-  return write(fileName, JSON.stringify(item));
+  return saveFile('tempItem', userId, JSON.stringify(item));
 };
 
 export const retrieveTempItem = async ({ user }: ThymeRequest): Promise<any> => {
@@ -99,7 +54,7 @@ export const retrieveTempItem = async ({ user }: ThymeRequest): Promise<any> => 
   }
 
   try {
-    return read(`temp_${user.id}`);
+    return readFile('tempItem', user.id);
   } catch (e) {
     throw new Error('Error getting temporary item');
   }
