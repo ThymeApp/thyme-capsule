@@ -10,7 +10,8 @@ import type { $Request, $Response } from 'express';
 import setupErrorLogging from './helpers/errorLogging';
 import { initialized } from './helpers/passport';
 import sequelize from './database';
-import { migrateOld } from './helpers/files';
+
+import migrateOldFiles from './migrations/files';
 
 import connectSocketIO from './middlewares/socket';
 
@@ -38,7 +39,11 @@ registerRoutes(app);
 connectSocketIO(server);
 
 server.listen(port, async () => {
+  // sync database tables
   await sequelize.sync();
-  await migrateOld();
+
+  // run migrations
+  await migrateOldFiles();
+
   console.info(`Server started on port ${port}`);
 });
