@@ -11,6 +11,8 @@ import setupErrorLogging from './helpers/errorLogging';
 import { initialized } from './helpers/passport';
 import sequelize from './database';
 
+import migrateOldFiles from './migrations/files';
+
 import connectSocketIO from './middlewares/socket';
 
 import registerRoutes from './routes';
@@ -37,6 +39,11 @@ registerRoutes(app);
 connectSocketIO(server);
 
 server.listen(port, async () => {
+  // sync database tables
   await sequelize.sync();
+
+  // run migrations
+  await migrateOldFiles();
+
   console.info(`Server started on port ${port}`);
 });

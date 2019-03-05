@@ -16,7 +16,7 @@ import {
   retrieveJson,
   saveJson,
   retrieveTempItem,
-} from './middlewares/files';
+} from './middlewares/state';
 
 import catchError from './helpers/middleware';
 import { authJwt } from './helpers/passport';

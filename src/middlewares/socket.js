@@ -4,7 +4,7 @@ import socketIO from 'socket.io';
 
 import { verify } from '../helpers/passport';
 
-import { saveTempItem } from './files';
+import { saveTempItem } from './state';
 
 function decodeToken(data): null | { id: string } {
   try {

@@ -74,4 +74,15 @@ export const StripeLog = sequelize.define('StripeLog', {
   event: Sequelize.TEXT,
 });
 
+export const File = sequelize.define('File', {
+  id: {
+    type: Sequelize.UUID,
+    primaryKey: true,
+    defaultValue: Sequelize.UUIDV4,
+  },
+  type: Sequelize.STRING,
+});
+
+File.belongsTo(User);
+
 export default sequelize;
