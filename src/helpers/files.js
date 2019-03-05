@@ -80,11 +80,31 @@ export async function readFile(type: string, userId: string): Promise<any> {
   return read(fileEntry.id);
 }
 
+export async function cleanupFiles(type: string, userId: string) {
+  const filesToDelete = await File.findAll({
+    where: {
+      type,
+      UserId: userId,
+    },
+    order: [['createdAt', 'DESC']],
+    offset: 5,
+  });
+
+  filesToDelete.forEach((file) => {
+    remove(file.id);
+    file.destroy();
+  });
+
+  return true;
+}
+
 export async function saveFile(type: string, userId: string, content: string) {
   const fileEntry = await File.create({
     type,
     UserId: userId,
   });
+
+  cleanupFiles(type, userId).catch(() => {});
 
   return write(fileEntry.id, content);
 }
