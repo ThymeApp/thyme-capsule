@@ -91,7 +91,10 @@ export async function cleanupFiles(type: string, userId: string) {
   });
 
   filesToDelete.forEach((file) => {
+    // remove file
     remove(file.id);
+
+    // remove database entry
     file.destroy();
   });
 
@@ -104,7 +107,11 @@ export async function saveFile(type: string, userId: string, content: string) {
     UserId: userId,
   });
 
-  cleanupFiles(type, userId).catch(() => {});
+  try {
+    await cleanupFiles(type, userId);
+  } catch (e) {
+    // silently fail
+  }
 
   return write(fileEntry.id, content);
 }
