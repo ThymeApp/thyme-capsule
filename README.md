@@ -22,6 +22,8 @@ Read more about connecting the Thyme app to your instance in the [Thyme docs](ht
 
 ## Available environment variables
 
+Create a `.env` file in the root of the project and it will be used to extend `process.env`.
+
 ```
 ENV=production/development/test
 PORT=5000
