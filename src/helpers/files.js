@@ -92,7 +92,7 @@ export async function cleanupFiles(type: string, userId: string) {
 
   filesToDelete.forEach((file) => {
     // remove file
-    remove(file.id);
+    remove(file.id).catch(e => console.error(e));
 
     // remove database entry
     file.destroy();
